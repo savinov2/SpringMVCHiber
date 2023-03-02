@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.savinov.models.User;
 import ru.savinov.service.UserService;
-import ru.savinov.service.UserServiceImpl;
 
 @Controller
 public class ControllerUser {
@@ -18,12 +17,12 @@ public class ControllerUser {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", userService.index());
+        model.addAttribute("users", userService.findAllUser());
         return "user/index";
     }
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("user", userService.findUserById(id));
         return "user/show";
     }
     @GetMapping("/new")
@@ -33,22 +32,22 @@ public class ControllerUser {
     }
     @PostMapping()
     public String create(@ModelAttribute("user") User user){
-        userService.save(user);
+        userService.saveUserByUser(user);
         return "redirect:/";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("user", userService.findUserById(id));
         return "user/edit";
     }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") int id){
-        userService.update(user,id);
+        userService.updateUserByUserAndId(user,id);
         return "redirect:/";
     }
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id){
-        userService.delete(id);
+        userService.deleteUserById(id);
         return "redirect:/";
     }
 }
